@@ -40,10 +40,18 @@ void rawSpectra::calculatePoints()
   for(unsigned int i = 0; i < fZUp.size(); i++)
   {
     tanPhi = fZUp[i] - fZDown[i];
-    tanPhi*=10;
+    tanPhi*=10;	// cm -> mm
     tanPhi/=2*fR;
-    Y = -0.5 * fTOF[i]/2000*300;
     
+    double dl = 0;
+    double c = 299792458;  //m/s
+    dl = fTOF[i] * 0.5 * c; 
+    dl *= 1E3; // m-> mm
+    dl *= 1E-12; // s->ps
+    
+    cout << dl << endl;
+    
+    Y = -1 * dl;
     Y /= sqrt(1 + tanPhi * tanPhi);	
     Z = 0.5*( fZUp[i]*10 + fZDown[i]*10 + 2*Y* tanPhi );
     fPoints.push_back( std::make_pair<> (Z, Y) );
@@ -56,7 +64,6 @@ void rawSpectra::fillRawHist()
   for(auto point: fPoints)
   {
     fRawHist->Fill( point.first+fL/2, point.second+fR, 1); 
-    cout << point.first << "  " << point.second << endl;
   }
 }
 

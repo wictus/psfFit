@@ -59,7 +59,7 @@ int main(int argc, char **argv) {
 
   //workWithPSF( prePath );
   rawSpectra spectra(prePath);
-  spectra.setL(500);
+  spectra.setL(300);
   spectra.setR(410/2);
   spectra.saveRawHist(prePath); 
   
