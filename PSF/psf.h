@@ -15,7 +15,8 @@
 
 class PSF{
 public:
-  PSF(std::string inputFile);
+  PSF();
+  PSF(std::string& inputFile);
   void setZ(int Z);
   void setY(int Y);
   void findZandY();
@@ -25,7 +26,7 @@ public:
   void saveYAsPNG();
   double getPSFZ();
   double getPSFY();
-private:
+protected:
   TH2F* recoHist;
   void build2DHisto(std::string& name);
   void fillZ();

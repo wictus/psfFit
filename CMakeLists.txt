@@ -13,7 +13,7 @@ add_library(PSF SHARED PSF/psf.cpp)
 add_library(RAW SHARED RawSpectra/rawSpectra.cpp)
 
 target_link_libraries(PSF ${ROOT_LIBRARIES})
-target_link_libraries(RAW ${ROOT_LIBRARIES})
+target_link_libraries(RAW ${ROOT_LIBRARIES} PSF)
   
 add_executable(main main.cpp)
 

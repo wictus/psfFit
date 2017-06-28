@@ -61,7 +61,18 @@ int main(int argc, char **argv) {
   rawSpectra spectra(prePath);
   spectra.setL(300);
   spectra.setR(410/2);
+  
   spectra.saveRawHist(prePath); 
+  spectra.convertRawPoints(); 
+  
+  spectra.findZandY();
+  spectra.fitZ();
+  spectra.saveZAsPNG();
+  spectra.fitY();
+  spectra.saveYAsPNG();
+  
+   cout << spectra.getPSFY() << std::endl;
+   cout << spectra.getPSFZ() << std::endl;
   
   return 0;
 }

@@ -1,7 +1,7 @@
 #include "rawSpectra.h"
 
 using namespace std;
-rawSpectra::rawSpectra(std::string& inputFile)
+rawSpectra::rawSpectra(std::string& inputFile) : PSF()
 {
   ifstream file;
   file.open(inputFile);
@@ -12,6 +12,7 @@ rawSpectra::rawSpectra(std::string& inputFile)
   }
   
   readInputFile(file);
+  
   file.close();
   
 }
@@ -48,24 +49,40 @@ void rawSpectra::calculatePoints()
     dl = fTOF[i] * 0.5 * c; 
     dl *= 1E3; // m-> mm
     dl *= 1E-12; // s->ps
-    
-    cout << dl << endl;
-    
+       
     Y = -1 * dl;
     Y /= sqrt(1 + tanPhi * tanPhi);	
     Z = 0.5*( fZUp[i]*10 + fZDown[i]*10 + 2*Y* tanPhi );
-    fPoints.push_back( std::make_pair<> (Z, Y) );
+    fRawPoints.push_back( std::make_pair<> (Z, Y) );
   }
 }
 
 void rawSpectra::fillRawHist()
 {
   fRawHist = new TH2F("rawHisto", "rawHisto", fL, 0, fL, fR*2, 0 ,fR*2); 
-  for(auto point: fPoints)
+  for(auto point: fRawPoints)
   {
     fRawHist->Fill( point.first+fL/2, point.second+fR, 1); 
   }
 }
+
+void rawSpectra::convertRawPoints()
+{
+  if(! fRawHist->GetSize() ) 
+  {
+    cerr << "Raw histogram was not filled, cannot convert points\n";
+    exit(3);
+  }
+
+   for( unsigned int i = 1; i < fL+1; i++)
+   {
+      for( unsigned int j = 1; j < fR*2+1; j++)
+      {
+	fPoints.push_back(std::make_pair<>( std::make_pair<>(i,j), fRawHist->GetBinContent(i,j) ) );
+      }
+   }
+}
+
 
 void rawSpectra::saveRawHist(std::string& path)
 {

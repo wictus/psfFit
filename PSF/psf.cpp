@@ -1,6 +1,12 @@
 #include "psf.h"
 
-PSF::PSF(std::string inputFile)
+PSF::PSF()
+{
+
+}
+
+
+PSF::PSF(std::string& inputFile)
 {
  std::ifstream file;
  file.open( inputFile.c_str() );
@@ -17,7 +23,7 @@ PSF::PSF(std::string inputFile)
 void PSF::build2DHisto(std::string& file)
 {
   std::string name = "recoHist"+file;
-  recoHist = new TH2F(name.c_str(),name.c_str(), 500, 0, 500, 410, 0, 410 );
+  recoHist = new TH2F(name.c_str(),name.c_str(), 300, 0, 300, 410, 0, 410 );
   recoHist->GetXaxis()->SetTitle("Z [mm]");
   recoHist->GetYaxis()->SetTitle("Y [mm]");
   for( unsigned int i = 0; i < fPoints.size(); i++)
@@ -50,6 +56,7 @@ void PSF::findZandY()
   double max = 0.0;
   for(unsigned int i = 0; i < fPoints.size(); i++)
   {
+    
     if( fPoints[i].second > max )
     {
       max = fPoints[i].second;
@@ -136,7 +143,7 @@ void PSF::fitY()
 
 void PSF::fillZ()
 {
-  fZHisto = new TH1F("zProjection","zProjection",500,0,500);
+  fZHisto = new TH1F("zProjection","zProjection",300,0,300);
   fZHisto->GetXaxis()->SetTitle("");
   for(unsigned int i = 0; i < fPoints.size(); i++)
   {
