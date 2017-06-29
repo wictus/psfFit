@@ -144,7 +144,8 @@ void PSF::fitY()
 void PSF::fillZ()
 {
   fZHisto = new TH1F("zProjection","zProjection",300,0,300);
-  fZHisto->GetXaxis()->SetTitle("");
+  fZHisto->GetXaxis()->SetTitle("Position along Z axis [mm]");
+  fZHisto->GetYaxis()->SetTitle("Counts");
   for(unsigned int i = 0; i < fPoints.size(); i++)
   {
     if( fY == fPoints[i].first.second )
@@ -155,6 +156,8 @@ void PSF::fillZ()
 void PSF::fillY()
 { 
   fYHisto = new TH1F("yProjection","yProjection",420,0,420);
+  fYHisto->GetYaxis()->SetTitle("Counts");
+  fYHisto->GetXaxis()->SetTitle("Position along Y axis [mm]");
   for(unsigned int i = 0; i < fPoints.size(); i++)
   {
     if( fZ == fPoints[i].first.first)
